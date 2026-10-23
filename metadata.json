@@ -1,0 +1,6 @@
+{
+  "name": "Factory Finance Tracker",
+  "description": "Financial tracking and management system for Indian Private Limited manufacturing company across Phase 1 and Phase 2 factory operations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

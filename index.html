@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      // Suppress Vite HMR WebSocket connection errors in cloud dev iframe environment
+      (function () {
+        function isViteHmrError(err) {
+          if (!err) return false;
+          var str = '';
+          if (typeof err === 'string') str = err;
+          else if (err instanceof Error) str = (err.message || '') + ' ' + (err.stack || '');
+          else if (typeof err === 'object') {
+            try {
+              str = (err.message || '') + ' ' + (err.filename || '') + ' ' + JSON.stringify(err);
+            } catch (e) {
+              str = String(err);
+            }
+          }
+          return (
+            str.includes('WebSocket') ||
+            str.includes('vite') ||
+            str.includes('closed without opened') ||
+            str.includes('@vite/client')
+          );
+        }
+
+        window.addEventListener(
+          'error',
+          function (event) {
+            if (isViteHmrError(event.error) || isViteHmrError(event.message) || isViteHmrError(event.filename)) {
+              event.stopImmediatePropagation();
+              event.preventDefault();
+              return true;
+            }
+          },
+          true
+        );
+
+        window.addEventListener(
+          'unhandledrejection',
+          function (event) {
+            if (isViteHmrError(event.reason)) {
+              event.stopImmediatePropagation();
+              event.preventDefault();
+              return true;
+            }
+          },
+          true
+        );
+
+        var _origConsoleError = console.error;
+        console.error = function () {
+          var args = Array.prototype.slice.call(arguments);
+          for (var i = 0; i < args.length; i++) {
+            if (isViteHmrError(args[i])) return;
+          }
+          _origConsoleError.apply(console, arguments);
+        };
+
+        var _origConsoleWarn = console.warn;
+        console.warn = function () {
+          var args = Array.prototype.slice.call(arguments);
+          for (var i = 0; i < args.length; i++) {
+            if (isViteHmrError(args[i])) return;
+          }
+          _origConsoleWarn.apply(console, arguments);
+        };
+
+        // Neutralize Vite HMR WebSocket errors at source
+        if (typeof window !== 'undefined' && window.WebSocket) {
+          var NativeWebSocket = window.WebSocket;
+          window.WebSocket = function (url, protocols) {
+            var ws = new NativeWebSocket(url, protocols);
+            if (protocols === 'vite-hmr' || (url && String(url).includes('vite'))) {
+              ws.addEventListener('error', function (e) {
+                e.stopImmediatePropagation();
+              });
+              ws.addEventListener('close', function (e) {
+                e.stopImmediatePropagation();
+              });
+            }
+            return ws;
+          };
+          window.WebSocket.prototype = NativeWebSocket.prototype;
+          window.WebSocket.CONNECTING = NativeWebSocket.CONNECTING;
+          window.WebSocket.OPEN = NativeWebSocket.OPEN;
+          window.WebSocket.CLOSING = NativeWebSocket.CLOSING;
+          window.WebSocket.CLOSED = NativeWebSocket.CLOSED;
+        }
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <title>VoltEdge - Generator Manufacturing & Finance Ledger</title>
+    <meta name="description" content="Financial tracking and management system for Indian Private Limited manufacturing company across Phase 1 and Phase 2 factory operations." />
+    <meta property="og:title" content="VoltEdge - Generator Manufacturing & Finance Ledger" />
+    <meta property="og:description" content="Financial tracking and management system for Indian Private Limited manufacturing company across Phase 1 and Phase 2 factory operations." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="VoltEdge" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

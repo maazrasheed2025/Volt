@@ -1,0 +1,428 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+/* ========================================================
+   NAVIGATION MENU TRIGGER ANCHORING (ALWAYS VISIBLE)
+   ======================================================== */
+.navbar-menu-trigger {
+  flex-shrink: 0 !important;
+  margin-left: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  z-index: 40 !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  cursor: pointer !important;
+}
+
+/* ========================================================
+   MOBILE BOTTOM NAVIGATION & DYNAMIC CLEARANCE SYSTEM
+   ======================================================== */
+:root {
+  /* Height of the fixed bottom navigation bar (h-14 = 56px = 3.5rem) */
+  --mobile-nav-bar-height: 3.5rem;
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-top: env(safe-area-inset-top, 0px);
+
+  /* Total physical height occupied by the fixed mobile bottom bar */
+  --mobile-nav-total-height: calc(var(--mobile-nav-bar-height) + var(--safe-area-bottom));
+
+  /* Safe clearance buffer: total bottom nav height + comfortable breathing margin */
+  --mobile-nav-clearance: calc(var(--mobile-nav-total-height) + 1.5rem);
+}
+
+/* On desktop viewports (lg: 1024px+), mobile bottom navigation is hidden */
+@media (min-width: 1024px) {
+  :root {
+    --mobile-nav-bar-height: 0px;
+    --safe-area-bottom: 0px;
+    --mobile-nav-total-height: 0px;
+    --mobile-nav-clearance: 0px;
+  }
+}
+
+/* Global scroll padding to ensure elements scrolled into view or focused aren't obscured */
+html {
+  scroll-padding-bottom: var(--mobile-nav-clearance);
+}
+
+/* Universal bottom clearance classes */
+.app-content-clearance {
+  padding-bottom: var(--mobile-nav-clearance);
+}
+
+.app-footer-clearance {
+  padding-bottom: calc(1rem + var(--mobile-nav-total-height));
+}
+
+@media (min-width: 1024px) {
+  .app-content-clearance {
+    padding-bottom: 2rem;
+  }
+  .app-footer-clearance {
+    padding-bottom: 1rem;
+  }
+}
+
+/* Print Styles for CA Audit Report PDF Generation */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #ca-printable-dossier, #ca-printable-dossier * {
+    visibility: visible;
+  }
+  #ca-printable-dossier {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    background: white !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  @page {
+    size: A4 portrait;
+    margin: 12mm 10mm;
+  }
+}
+
+/* ========================================================
+   LIGHT THEME TYPOGRAPHY & CONTRAST ENHANCEMENT
+   ======================================================== */
+
+html.theme-light {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+/* Light Mode Global Background & Base Typography */
+html.theme-light body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* Light Mode Card Surfaces & Panels */
+html.theme-light .bg-slate-950,
+html.theme-light .bg-slate-950\/95,
+html.theme-light .bg-slate-950\/90,
+html.theme-light .bg-slate-950\/85,
+html.theme-light .bg-slate-950\/80,
+html.theme-light .bg-slate-950\/70,
+html.theme-light .bg-slate-950\/60,
+html.theme-light .bg-slate-950\/50,
+html.theme-light .bg-slate-950\/40,
+html.theme-light .bg-slate-900,
+html.theme-light .bg-slate-900\/95,
+html.theme-light .bg-slate-900\/90,
+html.theme-light .bg-slate-900\/80,
+html.theme-light .bg-slate-900\/70,
+html.theme-light .bg-slate-900\/60,
+html.theme-light .bg-slate-900\/50 {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Secondary light surfaces / pill backgrounds */
+html.theme-light .bg-slate-800,
+html.theme-light .bg-slate-800\/90,
+html.theme-light .bg-slate-800\/80,
+html.theme-light .bg-slate-800\/70,
+html.theme-light .bg-slate-800\/60,
+html.theme-light .bg-slate-800\/50,
+html.theme-light .bg-slate-800\/40 {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Light Theme Borders */
+html.theme-light .border-slate-800,
+html.theme-light .border-slate-800\/90,
+html.theme-light .border-slate-800\/80,
+html.theme-light .border-slate-800\/70,
+html.theme-light .border-slate-800\/60,
+html.theme-light .border-slate-800\/50,
+html.theme-light .border-slate-800\/40,
+html.theme-light .border-slate-700,
+html.theme-light .border-slate-700\/80,
+html.theme-light .border-slate-700\/60,
+html.theme-light .border-slate-700\/50 {
+  border-color: #cbd5e1 !important;
+}
+
+/* Light Theme Text Visibility & High-Contrast Typography */
+/* Primary text & headings */
+html.theme-light .text-white,
+html.theme-light .text-slate-100,
+html.theme-light .text-slate-200 {
+  color: #0f172a !important;
+}
+
+/* Sub-headings and body text */
+html.theme-light .text-slate-300 {
+  color: #0f172a !important;
+  font-weight: 600;
+}
+
+/* Secondary text, metadata, labels: ensure WCAG AAA high contrast (never washed out) */
+html.theme-light .text-slate-400 {
+  color: #1e293b !important;
+  font-weight: 500;
+}
+
+html.theme-light .text-slate-500 {
+  color: #334155 !important;
+  font-weight: 500;
+}
+
+html.theme-light .text-slate-600 {
+  color: #1e293b !important;
+}
+
+html.theme-light .opacity-75,
+html.theme-light .opacity-70,
+html.theme-light .opacity-80 {
+  opacity: 0.95 !important;
+}
+
+/* Small label badges and mono tags */
+html.theme-light .text-\[9px\],
+html.theme-light .text-\[10px\],
+html.theme-light .text-\[11px\] {
+  color: #1e293b !important;
+}
+
+/* Form inputs & dropdowns in light theme */
+html.theme-light input,
+html.theme-light select,
+html.theme-light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.theme-light input::placeholder,
+html.theme-light textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Preserve bright white text on colored solid action buttons */
+html.theme-light button.bg-emerald-600,
+html.theme-light button.bg-emerald-500,
+html.theme-light button.bg-sky-600,
+html.theme-light button.bg-sky-500,
+html.theme-light button.bg-indigo-600,
+html.theme-light button.bg-indigo-500,
+html.theme-light button.bg-rose-600,
+html.theme-light button.bg-rose-500,
+html.theme-light button.bg-amber-600,
+html.theme-light button.bg-purple-600,
+html.theme-light .bg-emerald-600,
+html.theme-light .bg-indigo-600,
+html.theme-light .bg-sky-600,
+html.theme-light .bg-rose-600,
+html.theme-light .bg-amber-600,
+html.theme-light .bg-purple-600 {
+  color: #ffffff !important;
+}
+
+html.theme-light button.bg-emerald-600 *,
+html.theme-light button.bg-emerald-500 *,
+html.theme-light button.bg-sky-600 *,
+html.theme-light button.bg-sky-500 *,
+html.theme-light button.bg-indigo-600 *,
+html.theme-light button.bg-indigo-500 *,
+html.theme-light button.bg-rose-600 *,
+html.theme-light button.bg-rose-500 *,
+html.theme-light button.bg-amber-600 *,
+html.theme-light button.bg-purple-600 *,
+html.theme-light .bg-emerald-600 *,
+html.theme-light .bg-indigo-600 *,
+html.theme-light .bg-sky-600 *,
+html.theme-light .bg-rose-600 * {
+  color: #ffffff !important;
+}
+
+/* In light theme, darken light pastel text accent colors so they are crystal clear */
+/* High-Contrast Equity Share & Profit Percentages in Light Mode */
+html.theme-light .text-amber-200,
+html.theme-light .text-amber-300,
+html.theme-light .text-amber-300\/80,
+html.theme-light .text-amber-400,
+html.theme-light [class*="text-amber-300"],
+html.theme-light [class*="text-amber-400"] {
+  color: #78350f !important; /* deep rich amber-900 / dark bronze */
+  font-weight: 700 !important;
+}
+
+html.theme-light .text-emerald-300,
+html.theme-light .text-emerald-400,
+html.theme-light [class*="text-emerald-300"],
+html.theme-light [class*="text-emerald-400"] {
+  color: #065f46 !important; /* deep rich emerald-800 */
+  font-weight: 700 !important;
+}
+
+html.theme-light .text-sky-300,
+html.theme-light .text-sky-400,
+html.theme-light [class*="text-sky-300"],
+html.theme-light [class*="text-sky-400"] {
+  color: #0369a1 !important; /* deep rich sky-700 */
+  font-weight: 700 !important;
+}
+
+html.theme-light .text-purple-300,
+html.theme-light .text-purple-400,
+html.theme-light [class*="text-purple-300"],
+html.theme-light [class*="text-purple-400"] {
+  color: #6b21a8 !important; /* deep rich purple-800 */
+  font-weight: 700 !important;
+}
+
+html.theme-light .text-teal-300,
+html.theme-light .text-teal-400,
+html.theme-light [class*="text-teal-300"],
+html.theme-light [class*="text-teal-400"] {
+  color: #0f766e !important; /* deep rich teal-700 */
+  font-weight: 700 !important;
+}
+
+html.theme-light .text-rose-300,
+html.theme-light .text-rose-400,
+html.theme-light [class*="text-rose-300"],
+html.theme-light [class*="text-rose-400"] {
+  color: #9f1239 !important; /* deep rich rose-800 */
+  font-weight: 700 !important;
+}
+
+/* Light theme tinted badge backgrounds */
+html.theme-light .bg-emerald-950,
+html.theme-light .bg-emerald-950\/80,
+html.theme-light .bg-emerald-950\/60,
+html.theme-light .bg-emerald-950\/40,
+html.theme-light .bg-emerald-950\/30 {
+  background-color: #ecfdf5 !important;
+  border-color: #a7f3d0 !important;
+}
+
+html.theme-light .bg-sky-950,
+html.theme-light .bg-sky-950\/80,
+html.theme-light .bg-sky-950\/60,
+html.theme-light .bg-sky-950\/40,
+html.theme-light .bg-sky-950\/30 {
+  background-color: #f0f9ff !important;
+  border-color: #bae6fd !important;
+}
+
+html.theme-light .bg-amber-950,
+html.theme-light .bg-amber-950\/80,
+html.theme-light .bg-amber-950\/60,
+html.theme-light .bg-amber-950\/40,
+html.theme-light .bg-amber-950\/30 {
+  background-color: #fffbeb !important;
+  border-color: #fde68a !important;
+}
+
+html.theme-light .bg-purple-950,
+html.theme-light .bg-purple-950\/80,
+html.theme-light .bg-purple-950\/60,
+html.theme-light .bg-purple-950\/40,
+html.theme-light .bg-purple-950\/30 {
+  background-color: #faf5ff !important;
+  border-color: #e9d5ff !important;
+}
+
+html.theme-light .bg-rose-950,
+html.theme-light .bg-rose-950\/80,
+html.theme-light .bg-rose-950\/60,
+html.theme-light .bg-rose-950\/40,
+html.theme-light .bg-rose-950\/30 {
+  background-color: #fff1f2 !important;
+  border-color: #fecdd3 !important;
+}
+
+/* Light theme modals backdrop */
+html.theme-light .bg-slate-950\/85 {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+}
+
+/* Dark slate gradient overrides in light mode */
+html.theme-light .from-slate-900,
+html.theme-light .from-slate-950,
+html.theme-light .via-slate-900,
+html.theme-light .via-slate-900\/95,
+html.theme-light .via-slate-950,
+html.theme-light .to-slate-900,
+html.theme-light .to-slate-950 {
+  --tw-gradient-from: #ffffff !important;
+  --tw-gradient-via: #ffffff !important;
+  --tw-gradient-to: #f8fafc !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to) !important;
+}
+
+html.theme-light .from-emerald-950\/90,
+html.theme-light .from-emerald-950\/80,
+html.theme-light .from-emerald-950\/70,
+html.theme-light .from-emerald-950\/40,
+html.theme-light .from-emerald-950\/30 {
+  --tw-gradient-from: #ecfdf5 !important;
+}
+
+html.theme-light .from-sky-950\/80,
+html.theme-light .from-sky-950\/70,
+html.theme-light .from-sky-950\/40,
+html.theme-light .from-sky-950\/30 {
+  --tw-gradient-from: #f0f9ff !important;
+}
+
+html.theme-light .from-amber-950\/80,
+html.theme-light .from-amber-950\/70,
+html.theme-light .from-amber-950\/50,
+html.theme-light .from-amber-950\/40,
+html.theme-light .from-amber-950\/30 {
+  --tw-gradient-from: #fffbeb !important;
+}
+
+html.theme-light .from-purple-950\/80,
+html.theme-light .from-purple-950\/70,
+html.theme-light .from-purple-950\/40,
+html.theme-light .from-purple-950\/30 {
+  --tw-gradient-from: #faf5ff !important;
+}
+
+/* Light Mode Recharts Axis and Grid lines */
+html.theme-light .recharts-cartesian-grid line {
+  stroke: #cbd5e1 !important;
+}
+
+html.theme-light .recharts-text {
+  fill: #1e293b !important;
+  font-weight: 600;
+}
+
+html.theme-light .recharts-legend-item-text {
+  color: #0f172a !important;
+  font-weight: 600;
+}
+
+/* Light mode tables */
+html.theme-light th {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+  font-weight: 700;
+}
+
+html.theme-light td {
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+}
